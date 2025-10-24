@@ -1,0 +1,108 @@
+# FESTA Configuration File
+
+# Model settings
+model:
+  name: "Qwen/Qwen2-Audio-7B-Instruct"
+  device: "cuda"  # cuda or cpu
+  dtype: "float16"  # float16 or float32
+  max_length: 512
+
+# Dataset settings
+dataset:
+  data_dir: "TREA_dataset"
+  tasks: ["count", "order", "duration"]
+  samples_per_task: 30  # Start with 30 samples per task
+  random_seed: 42
+
+# FESTA sampling parameters
+festa:
+  # Number of equivalent samples (K1)
+  n_fes_audio: 15  # Audio transformations
+  n_fes_text: 4    # Text paraphrases
+  # Total FES = n_fes_audio × n_fes_text = 60
+
+  # Number of complementary samples (K2)
+  n_fcs_audio: 15
+  n_fcs_text: 4
+  # Total FCS = n_fcs_audio × n_fcs_text = 60
+
+# FES transformations
+fes_transforms:
+  audio:
+    - type: "add_silence"
+      params:
+        duration_range: [0.1, 0.5]  # seconds
+        position: "between"  # between events
+    - type: "volume_adjustment"
+      params:
+        gain_range: [-0.2, 0.2]  # ±20%
+    - type: "add_noise"
+      params:
+        snr_range: [20, 40]  # Signal-to-noise ratio in dB
+  text:
+    paraphrase_method: "manual"  # manual or llm
+    num_paraphrases: 4
+
+# FCS transformations (task-specific)
+fcs_transforms:
+  count:
+    audio:
+      - type: "add_event"
+        params:
+          source: "synthetic_silences"
+          position: ["start", "end"]
+  order:
+    audio:
+      - type: "swap_events"
+        params:
+          mode: "adjacent"
+  duration:
+    audio:
+      - type: "replace_event"
+        params:
+          target: ["longest", "shortest"]
+  text:
+    reverse_relationships: true
+    avoid_negation: true
+
+# Baseline methods
+baselines:
+  output_entropy:
+    enabled: true
+    temperature: 1.0
+    num_samples: 20
+  verbalized_confidence:
+    enabled: true
+  input_augmentation:
+    enabled: true
+    audio_only: true
+    text_only: true
+    combined: true
+  rephrase_uncertainty:
+    enabled: true
+    num_rephrases: 5
+  blackbox_uncertainty:
+    enabled: true
+    top_k: 4
+    num_samples: 5
+
+# Evaluation metrics
+metrics:
+  - "auroc"
+  - "accuracy"
+  - "selective_risk"
+  - "coverage_accuracy"
+
+# Experiment settings
+experiment:
+  output_dir: "results"
+  save_predictions: true
+  save_uncertainty_scores: true
+  save_intermediate: true
+  log_level: "INFO"
+
+# Hardware settings
+hardware:
+  batch_size: 1  # Process one sample at a time
+  num_workers: 4
+  pin_memory: true
