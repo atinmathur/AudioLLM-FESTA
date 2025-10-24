@@ -1,0 +1,6 @@
+question,id,audio_path,optionA,optionB,optionC,optionD,correct,source_wavs,source_categories
+Determine the number of unique sound sources in this recording.,6,mini-TREA_dataset/count/audios/6.wav,0,2,1,3,C,['ESC-50-master/audio/1-69165-A-34.wav'],['can_opening']
+What is the total number of unique sound types in this audio?,28,mini-TREA_dataset/count/audios/28.wav,4,3,2,1,C,"['ESC-50-master/audio/5-201170-A-46.wav', 'ESC-50-master/audio/4-181999-A-36.wav', 'ESC-50-master/audio/4-181999-A-36.wav', 'ESC-50-master/audio/5-201170-A-46.wav', 'ESC-50-master/audio/5-201170-A-46.wav']","['church_bells', 'vacuum_cleaner', 'vacuum_cleaner', 'church_bells', 'church_bells']"
+What is the number of distinct sound sources in the audio file?,70,mini-TREA_dataset/count/audios/70.wav,0,2,3,1,D,"['ESC-50-master/audio/5-201274-A-21.wav', 'ESC-50-master/audio/5-201274-A-21.wav']","['sneezing', 'sneezing']"
+Identify the count of different sound sources in this clip.,163,mini-TREA_dataset/count/audios/163.wav,0,3,2,1,D,['ESC-50-master/audio/5-215447-A-47.wav'],['airplane']
+How many different sound sources can be heard in this clip?,189,mini-TREA_dataset/count/audios/189.wav,4,1,3,2,D,"['ESC-50-master/audio/5-219044-A-46.wav', 'ESC-50-master/audio/4-184237-A-28.wav', 'ESC-50-master/audio/5-219044-A-46.wav']","['church_bells', 'snoring', 'church_bells']"

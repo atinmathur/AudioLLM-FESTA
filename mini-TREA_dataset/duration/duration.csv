@@ -1,0 +1,6 @@
+question,id,audio_path,optionA,optionB,optionC,optionD,correct
+Which sound among the following is heard for the greatest length of time?,22,mini-TREA_dataset/duration/audios/22.wav,washing_machine,pouring_water,clock_alarm,church_bells,A
+Which of the following sounds lasts for the shortest time?,139,mini-TREA_dataset/duration/audios/139.wav,wind,door_wood_creaks,can_opening,laughing,A
+Which of these sounds has the longest duration?,151,mini-TREA_dataset/duration/audios/151.wav,church_bells,thunderstorm,crow,toilet_flush,A
+Which of the following sounds lasts for the shortest time?,173,mini-TREA_dataset/duration/audios/173.wav,crow,sneezing,insects,chirping_birds,B
+Which of the following sounds lasts for the shortest time?,189,mini-TREA_dataset/duration/audios/189.wav,hen,water_drops,pig,crying_baby,C

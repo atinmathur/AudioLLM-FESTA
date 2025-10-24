@@ -1,0 +1,6 @@
+id,question,audio_path,optionA,optionB,optionC,optionD,correct
+26,Which sound event occurs first?,mini-TREA_dataset/order/audios/26.wav,Snoring,Clapping,door_wood_knock,"Drinking, sipping",C
+35,Which sound event occurs first?,mini-TREA_dataset/order/audios/35.wav,snoring,Train,Dog,Pig,A
+57,Which sound event occurs first?,mini-TREA_dataset/order/audios/57.wav,Toilet flush,Sheep,Footsteps,train,D
+62,Which sound event occurs after sea_waves sound?,mini-TREA_dataset/order/audios/62.wav,airplane,Clock tick,Crickets,Cow,A
+188,Which sound event occurs second?,mini-TREA_dataset/order/audios/188.wav,Clapping,chirping_birds,Chirping birds,Hen,B

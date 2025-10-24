@@ -1,0 +1,6 @@
+question,id,audio_path,optionA,optionB,optionC,optionD,correct
+Determine the number of unique sound sources in this recording.,6,mini-TREA_dataset/count/audios/6.wav,0,2,1,3,C
+What is the total number of unique sound types in this audio?,28,mini-TREA_dataset/count/audios/28.wav,4,3,2,1,C
+What is the number of distinct sound sources in the audio file?,70,mini-TREA_dataset/count/audios/70.wav,0,2,3,1,D
+Identify the count of different sound sources in this clip.,163,mini-TREA_dataset/count/audios/163.wav,0,3,2,1,D
+How many different sound sources can be heard in this clip?,189,mini-TREA_dataset/count/audios/189.wav,4,1,3,2,D

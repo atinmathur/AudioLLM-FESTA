@@ -6,7 +6,7 @@ Handles inference for multiple-choice question answering on audio inputs
 import torch
 import logging
 from typing import Dict, List, Optional, Tuple
-from transformers import AutoModelForCausalLM, AutoProcessor
+from transformers import Qwen2AudioForConditionalGeneration, AutoProcessor
 import numpy as np
 
 logging.basicConfig(level=logging.INFO)
@@ -54,7 +54,7 @@ class Qwen2AudioWrapper:
             )
 
             # Load model
-            self.model = AutoModelForCausalLM.from_pretrained(
+            self.model = Qwen2AudioForConditionalGeneration.from_pretrained(
                 self.model_name,
                 torch_dtype=self.dtype,
                 device_map=self.device if self.device == "cuda" else None,
