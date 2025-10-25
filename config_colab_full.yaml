@@ -1,0 +1,112 @@
+# FESTA Configuration for Google Colab - Full Dataset (100 samples per task)
+# Dataset stored in Google Drive for persistence across sessions
+
+# Model settings
+model:
+  name: "Qwen/Qwen2-Audio-7B-Instruct"
+  device: "cuda" # Colab provides GPU
+  dtype: "float16" # Use fp16 for memory efficiency
+  max_length: 512
+
+# Dataset settings
+dataset:
+  data_dir: "/content/drive/MyDrive/TREA_dataset" # Dataset in Google Drive root
+  tasks: ["count", "order", "duration"]
+  samples_per_task: 100 # 100 samples per task = 300 total samples
+  random_seed: 42
+
+# FESTA sampling parameters (REDUCED for faster testing)
+festa:
+  # Reduced from 15×4 to 5×2 for speed
+  n_fes_audio: 5 # Audio transformations (was 15)
+  n_fes_text: 2 # Text paraphrases (was 4)
+  # Total FES = 5 × 2 = 10 samples (was 60)
+
+  # Reduced complementary samples
+  n_fcs_audio: 5 # (was 15)
+  n_fcs_text: 2 # (was 4)
+  # Total FCS = 5 × 2 = 10 samples (was 60)
+
+# FES transformations
+fes_transforms:
+  audio:
+    - type: "add_silence"
+      params:
+        duration_range: [0.1, 0.3] # Shorter range
+        position: "between"
+    - type: "volume_adjustment"
+      params:
+        gain_range: [-0.15, 0.15] # ±15%
+    - type: "add_noise"
+      params:
+        snr_range: [30, 40] # Higher SNR for stability
+  text:
+    paraphrase_method: "manual"
+    num_paraphrases: 2 # Reduced from 4
+
+# FCS transformations (task-specific)
+fcs_transforms:
+  count:
+    audio:
+      - type: "add_event"
+        params:
+          source: "synthetic_silences"
+          position: ["start", "end"]
+  order:
+    audio:
+      - type: "swap_events"
+        params:
+          mode: "adjacent"
+  duration:
+    audio:
+      - type: "replace_event"
+        params:
+          target: ["longest", "shortest"]
+  text:
+    reverse_relationships: true
+    avoid_negation: true
+
+# Baseline methods (REDUCED for speed)
+baselines:
+  output_entropy:
+    enabled: true
+    temperature: 1.0
+    num_samples: 10 # Reduced from 20
+  verbalized_confidence:
+    enabled: false # Disable to save time
+  input_augmentation:
+    enabled: false # Disable to save time
+  rephrase_uncertainty:
+    enabled: true
+    num_rephrases: 3 # Reduced from 5
+  blackbox_uncertainty:
+    enabled: false # Disable to save time
+
+# Evaluation metrics
+metrics:
+  - "auroc"
+  - "accuracy"
+  - "selective_risk"
+  - "coverage_accuracy"
+
+# Experiment settings (COLAB-SPECIFIC with Drive paths)
+experiment:
+  output_dir: "/content/drive/MyDrive/festa_results" # Save results to Drive
+  save_predictions: true
+  save_uncertainty_scores: true
+  save_intermediate: true # IMPORTANT: Save after each sample
+  checkpoint_file: "/content/drive/MyDrive/festa_checkpoint.json" # Checkpoint in Drive for persistence
+  log_level: "INFO"
+
+# Hardware settings (optimized for Colab)
+hardware:
+  batch_size: 1 # Process one sample at a time
+  num_workers: 2 # Reduced from 4
+  pin_memory: true
+  clear_cache: true # Clear GPU cache between samples
+
+# Colab-specific settings
+colab:
+  auto_save_interval: 1 # Save checkpoint after every sample
+  memory_monitor: true # Monitor GPU memory
+  test_mode: false # Set to true to process only 1 sample for testing
