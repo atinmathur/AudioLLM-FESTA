@@ -422,6 +422,20 @@ class ColabFESTAExperiment:
         ground_truths = self.results['ground_truths']
         tasks = self.results['tasks']
 
+        # Check if we have any results
+        if len(predictions) == 0:
+            logger.error("\n" + "="*60)
+            logger.error("❌ ERROR: No samples were successfully processed!")
+            logger.error("="*60)
+            logger.error("All samples failed during processing.")
+            logger.error("Please check the error messages above for details.")
+            logger.error("\nCommon issues:")
+            logger.error("  • Audio files not found (check paths in CSV files)")
+            logger.error("  • Model loading failed")
+            logger.error("  • Memory issues")
+            logger.error("="*60)
+            raise RuntimeError("No samples were successfully processed. Cannot compute metrics.")
+
         # Overall accuracy
         overall_accuracy = compute_accuracy(predictions, ground_truths)
         self.metrics['overall_accuracy'] = overall_accuracy

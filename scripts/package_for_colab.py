@@ -186,6 +186,35 @@ def copy_mini_dataset_as_trea():
     print(f"   Copying mini-TREA_dataset/ → TREA_dataset/")
     shutil.copytree(src_dataset, dst_dataset)
 
+    # Fix CSV paths: Remove dataset prefix to use relative paths
+    print(f"   Fixing CSV paths...")
+    csv_files = list(dst_dataset.rglob('*.csv'))
+    fixed_count = 0
+
+    for csv_file in csv_files:
+        try:
+            # Read CSV
+            import pandas as pd
+            df = pd.read_csv(csv_file)
+
+            # Update audio_path column if it exists
+            if 'audio_path' in df.columns:
+                # Remove both 'mini-TREA_dataset/' and 'TREA_dataset/' prefixes
+                # to get relative paths like 'count/audios/123.wav'
+                df['audio_path'] = df['audio_path'].str.replace(
+                    'mini-TREA_dataset/', '', regex=False
+                ).str.replace(
+                    'TREA_dataset/', '', regex=False
+                )
+
+                # Save updated CSV
+                df.to_csv(csv_file, index=False)
+                fixed_count += 1
+        except Exception as e:
+            print(f"   ⚠️  Error fixing {csv_file.name}: {e}")
+
+    print(f"   ✅ Fixed {fixed_count} CSV files")
+
     # Count files
     audio_count = len(list(dst_dataset.rglob('*.wav')))
     csv_count = len(list(dst_dataset.rglob('*.csv')))

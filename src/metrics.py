@@ -69,8 +69,16 @@ def compute_accuracy(
     Returns:
         Accuracy (0-1)
     """
+    if len(predictions) == 0 or len(ground_truths) == 0:
+        raise ValueError(
+            "Cannot compute accuracy: predictions or ground_truths is empty. "
+            "No samples were successfully processed."
+        )
+
     if len(predictions) != len(ground_truths):
-        raise ValueError("Length mismatch")
+        raise ValueError(
+            f"Length mismatch: {len(predictions)} predictions vs {len(ground_truths)} ground truths"
+        )
 
     correct = sum(1 for pred, gt in zip(predictions, ground_truths) if pred == gt)
     return correct / len(predictions)
