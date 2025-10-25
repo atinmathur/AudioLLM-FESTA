@@ -87,11 +87,19 @@ class TREADataset:
 
             # Convert to list of dictionaries
             for idx, row in df.iterrows():
+                # Strip dataset prefix if present in CSV path
+                audio_path_from_csv = row['audio_path']
+                # Remove 'TREA_dataset/' or 'mini-TREA_dataset/' prefix if present
+                for prefix in ['TREA_dataset/', 'mini-TREA_dataset/']:
+                    if audio_path_from_csv.startswith(prefix):
+                        audio_path_from_csv = audio_path_from_csv[len(prefix):]
+                        break
+
                 sample = {
                     'task': task,
                     'id': row['id'],
                     'question': row['question'],
-                    'audio_path': str(self.data_dir / row['audio_path']),
+                    'audio_path': str(self.data_dir / audio_path_from_csv),
                     'options': {
                         'A': row['optionA'],
                         'B': row['optionB'],
